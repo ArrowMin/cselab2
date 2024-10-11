@@ -12,10 +12,26 @@ function App() {
     setCurrentTheme(currentTheme === themes.light ? themes.dark : themes.light);
   };
 
+  //Let body tag get be able to get toggled as well.
   useEffect(() => {
     document.body.style.background = currentTheme.background;
     document.body.style.color = currentTheme.foreground;
   }, [currentTheme]);
+
+  const [likedNotes, setLikedNotes] = useState<Note[]>([]);
+
+  const toggleLikedNote = (note: Note) => {
+    if (likedNotes.includes(note)) {
+      setLikedNotes(likedNotes.filter((likedNote) => likedNote !== note));
+    } else {
+      setLikedNotes([...likedNotes, note]);
+    }
+  };
+
+  useEffect(() => {
+    const likedNoteTitles = likedNotes.map((likedNote) => likedNote.title);
+    console.log("Liked notes titles:", likedNoteTitles);
+  }, [likedNotes]);
 
   return (
     <ThemeContext.Provider value={currentTheme}>
@@ -75,6 +91,15 @@ function App() {
             >
               <div className="notes-header">
                 <button
+                  onClick={() => toggleLikedNote(note)}
+                  style={{
+                    background: currentTheme.background,
+                    color: currentTheme.foreground,
+                  }}
+                >
+                  {likedNotes.includes(note) ? "❤️" : "♡"}
+                </button>
+                <button
                   style={{
                     background: currentTheme.background,
                     color: currentTheme.foreground,
@@ -89,7 +114,14 @@ function App() {
             </div>
           ))}
         </div>
-        \{" "}
+      </div>
+      <div>
+        <h2>List of favorites:</h2>
+        <ul>
+          {likedNotes.map((note) => (
+            <li>{note.title}</li>
+          ))}
+        </ul>
       </div>
     </ThemeContext.Provider>
   );
