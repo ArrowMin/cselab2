@@ -29,12 +29,13 @@ function App() {
     }
   };
 
+  const [notes, setNotes] = useState(dummyNotesList);
+
   useEffect(() => {
     const likedNoteTitles = likedNotes.map((likedNote) => likedNote.title);
     console.log("Liked notes titles:", likedNoteTitles);
   }, [likedNotes]);
 
-  const [notes, setNotes] = useState(dummyNotesList);
   const initialNote = {
     id: -1,
     title: "",
@@ -51,6 +52,8 @@ function App() {
     setNotes([createNote, ...notes]);
     setCreateNote(initialNote);
   };
+
+  const [selectedNote, setSelectedNote] = useState<Note>(initialNote);
 
   return (
     <ThemeContext.Provider value={currentTheme}>
@@ -143,6 +146,15 @@ function App() {
             >
               <div className="notes-header">
                 <button
+                  onClick={() => setSelectedNote(note)}
+                  style={{
+                    background: currentTheme.background,
+                    color: currentTheme.foreground,
+                  }}
+                >
+                  Edit
+                </button>
+                <button
                   onClick={() => toggleLikedNote(note)}
                   style={{
                     background: currentTheme.background,
@@ -156,13 +168,15 @@ function App() {
                     background: currentTheme.background,
                     color: currentTheme.foreground,
                   }}
+                  onClick={() => setNotes(notes.filter((n) => n !== note))}
                 >
                   x
                 </button>
               </div>
-              <h2> {note.title} </h2>
-              <p> {note.content} </p>
-              <p> {note.label} </p>
+
+              <h2 contentEditable={note === selectedNote}>{note.title}</h2>
+              <p contentEditable={note === selectedNote}>{note.content}</p>
+              <p contentEditable={note === selectedNote}>{note.label}</p>
             </div>
           ))}
         </div>
