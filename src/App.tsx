@@ -4,6 +4,7 @@ import { dummyNotesList } from "./constants"; // Import the dummyNotesList from 
 //import ToggleTheme from "./hooksExercise";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext, themes } from "./ThemeContext";
+import { createToken } from "typescript";
 
 function App() {
   const [currentTheme, setCurrentTheme] = useState(themes.light);
@@ -33,6 +34,24 @@ function App() {
     console.log("Liked notes titles:", likedNoteTitles);
   }, [likedNotes]);
 
+  const [notes, setNotes] = useState(dummyNotesList);
+  const initialNote = {
+    id: -1,
+    title: "",
+    content: "",
+    label: Label.other,
+  };
+  const [createNote, setCreateNote] = useState(initialNote);
+
+  const createNoteHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log("title: ", createNote.title);
+    console.log("content: ", createNote.content);
+    createNote.id = notes.length + 1;
+    setNotes([createNote, ...notes]);
+    setCreateNote(initialNote);
+  };
+
   return (
     <ThemeContext.Provider value={currentTheme}>
       <button
@@ -53,7 +72,7 @@ function App() {
         }}
         className="app-container"
       >
-        <form className="note-form">
+        <form className="note-form" onSubmit={createNoteHandler}>
           <div>
             <input
               placeholder="Note Title"
@@ -62,6 +81,11 @@ function App() {
                 color: currentTheme.foreground,
                 borderColor: currentTheme.foreground,
               }}
+              value={createNote.title}
+              onChange={(event) =>
+                setCreateNote({ ...createNote, title: event.target.value })
+              }
+              required
             ></input>
           </div>
 
@@ -72,7 +96,35 @@ function App() {
                 color: currentTheme.foreground,
                 borderColor: currentTheme.foreground,
               }}
+              value={createNote.content}
+              onChange={(event) =>
+                setCreateNote({ ...createNote, content: event.target.value })
+              }
+              required
             ></textarea>
+          </div>
+
+          <div>
+            <select
+              style={{
+                background: currentTheme.background,
+                color: currentTheme.foreground,
+                borderColor: currentTheme.foreground,
+              }}
+              value={createNote.label}
+              onChange={(event) =>
+                setCreateNote({
+                  ...createNote,
+                  label: event.target.value as Label,
+                })
+              }
+              required
+            >
+              <option value={Label.personal}>Personal</option>
+              <option value={Label.study}>Study</option>
+              <option value={Label.work}>Work</option>
+              <option value={Label.other}>Other</option>
+            </select>
           </div>
 
           <div>
@@ -80,7 +132,7 @@ function App() {
           </div>
         </form>
         <div className="notes-grid">
-          {dummyNotesList.map((note) => (
+          {notes.map((note) => (
             <div
               key={note.id}
               style={{
