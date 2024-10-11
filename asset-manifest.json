@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/cselab2/static/css/main.ba907d24.css",
+    "main.js": "/cselab2/static/js/main.880abf53.js",
+    "static/js/453.14aa56f7.chunk.js": "/cselab2/static/js/453.14aa56f7.chunk.js",
+    "index.html": "/cselab2/index.html",
+    "main.ba907d24.css.map": "/cselab2/static/css/main.ba907d24.css.map",
+    "main.880abf53.js.map": "/cselab2/static/js/main.880abf53.js.map",
+    "453.14aa56f7.chunk.js.map": "/cselab2/static/js/453.14aa56f7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ba907d24.css",
+    "static/js/main.880abf53.js"
+  ]
+}
