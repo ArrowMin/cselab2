@@ -92,3 +92,13 @@ input {
   background-color: rgb(220, 89, 89);
   color: white;
 }
+
+input:focus,
+textarea:focus {
+  background-color: #e0f7fa !important;
+}
+
+button:hover {
+  background-color: #e0f7fa !important;
+  color: black !important;
+}
